@@ -27,7 +27,7 @@ Rule-based risk evaluation
  - Require MFA to verify further
 
 # Tech Stack
-Python
-Flask
-SQLAlchemy
-SQLite
+- Python
+- Flask
+- SQLAlchemy
+- SQLite
