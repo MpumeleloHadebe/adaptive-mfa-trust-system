@@ -1,9 +1,9 @@
 # System Design Overview
 
 # Architecture
-Flask backend handles authentication logic
-Database stores users, devices, login attempts
-Decision engine evaluates trust level
+- Flask backend handles authentication logic
+- Database stores users, devices, login attempts
+- Decision engine evaluates trust level
 # Key Components
 1. Authentication Service
 - Handles login and registration
