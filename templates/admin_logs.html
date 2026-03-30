@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Security Logs</h2>
+<p>Last 50 security events:</p>
+
+<div class="table-container">
+    <table class="logs-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Event Type</th>
+                <th>Description</th>
+                <th>IP Address</th>
+                <th>User ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td><strong>{{ log.event_type }}</strong></td>
+                <td>{{ log.description }}</td>
+                <td>{{ log.ip_address }}</td>
+                <td>{% if log.user_id %}{{ log.user_id }}{% else %}System{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 1rem;">
+    <a href="{{ url_for('admin_config') }}" class="btn-submit" style="background: #fdde14; text-decoration: none;">Back to Configuration</a>
+</div>
+
+<style>
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 600px; /* Prevents table from getting too small */
+}
+
+.logs-table th, .logs-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.logs-table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+}
+
+.logs-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Responsive fixes for small screens */
+@media (max-width: 768px) {
+    .logs-table {
+        font-size: 0.8em;
+    }
+    
+    .logs-table th, .logs-table td {
+        padding: 6px 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logs-table {
+        font-size: 0.75em;
+        min-width: 500px;
+    }
+    
+    .logs-table th, .logs-table td {
+        padding: 4px 2px;
+    }
+}
+</style>
+{% endblock %}

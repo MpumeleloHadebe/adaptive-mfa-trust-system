@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>High Access</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='access.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>High Access Area</h2>
+        <p>Welcome, {{ user.email }}!</p>
+        <div class="score-box">
+            <p>You have successfully passed the MFA challenge and now have full access.</p>
+        </div>
+        <a href="{{ url_for('logout') }}"><button class="btn-low">Logout</button></a>
+    </div>
+
+</body>
+</html>

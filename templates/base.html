@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecureAccess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <span class="logo">SecureAccess</span>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="btn">Home</a>
+                
+                {% if session.user_id %}
+                    <!-- navigation for loged in users -->
+                    <a href="{{ url_for('low_access') }}" class="btn">Dashboard</a>
+                    
+                    <!-- Admin will be handled differently -->
+                    <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn">Register</a>
+                    <a href="{{ url_for('login') }}" class="btn highlight">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

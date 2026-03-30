@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Account</h2>
+<form method="POST" class="form-box">
+    
+    {{ form.hidden_tag() }}  <!--  --this creates the CSRF token - for security (from forms.py provide the security fo the csrf)-->
+
+    <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class="input-field") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.fav_images.label }}
+        {{ form.fav_images(size=6, multiple=True, class="input-field") }}
+        {% for error in form.fav_images.errors %}
+            <span style="color: red; font-size: 14px;">{{error }}</span>
+        {% endfor %}
+    </div>
+
+
+
+    <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class="input-field") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.confirm_password.label }}
+        {{ form.confirm_password(class="input-field") }}
+    </div>
+
+    <!-- Hidden input for screen width -->
+    <input type="hidden" name="screen_width" id="screen_width">
+    <input type="hidden" name="screen_height" id="screen_height">
+
+    <input type="hidden" name="timezone_name" id="timezone_name">
+    <input type="hidden" name="hardware_cores" id="hardware_cores">
+    <input type="hidden" name="device_memory" id="device_memory">
+    {{ form.submit(class="btn-submit") }}
+</form>
+
+<p class="redirect-text">
+    Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+</p>
+
+
+<script>
+   // Set screen width after page loads
+  window.onload = function() {
+    document.getElementById("screen_height").value = window.screen.height;
+    document.getElementById("screen_width").value = window.screen.width;
+
+    // Set timezone name (e.g., "Africa/Johannesburg")
+    document.getElementById("timezone_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Set hardware cores (if available)
+    document.getElementById("hardware_cores").value = navigator.hardwareConcurrency || 'unknown';
+    
+    // Set device memory (if available)
+    document.getElementById("device_memory").value = navigator.deviceMemory || 'unknown';
+  }
+</script>
+
+{% endblock %}

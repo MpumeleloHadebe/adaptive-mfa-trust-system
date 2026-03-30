@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="users-container">
+    <h2>Registered Users</h2>
+
+    {% if users %}
+    <div class="table-wrapper">
+        <table class="users-table">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Devices</th>
+                <th>Fav Images</th>
+                <th>Last Login</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td class="email-cell">
+                    {{ user.email }}
+                    {% if user.is_disabled %}
+                    <span style="color: #dc3545; font-weight: bold;">(DISABLED)</span>
+                    {% endif %}
+                </td>
+                <td class="center-cell">
+                    {% if user.is_admin %}
+                    yes
+                    {% else %}
+                    no
+                    {% endif %}
+                </td>
+                <td class="center-cell">{{ user.devices|length }}</td>
+                <td class="center-cell">
+                    {% if user.fav_images %}
+                    set
+                    {% else %}
+                    not set
+                    {% endif %}
+                </td>
+                <td class="date-cell">
+                    {% set last_login = user.security_logs|selectattr("event_type", "equalto", "LOGIN_SUCCESS")|sort(attribute="timestamp", reverse=true)|first %}
+                    {% if last_login %}
+                    {{ last_login.timestamp.strftime('%m/%d %H:%M') }}
+                    {% else %}
+                    Never
+                    {% endif %}
+                </td>
+                <td class="center-cell">
+                    {% if user.is_disabled %}
+                    <span style="color: #dc3545; font-weight: bold;">Disabled</span>
+                    {% else %}
+                        {% set last_login = user.security_logs|selectattr("event_type", "equalto", "LOGIN_SUCCESS")|sort(attribute="timestamp", reverse=true)|first %}
+                        {% if last_login %}
+                        <span style="color: #28a745;">Active</span>
+                        {% else %}
+                        <span style="color: #6c757d;">Inactive</span>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td class="center-cell">
+                    <div style="display: flex; gap: 5px; justify-content: center;">
+                        {% if user.is_disabled %}
+                        <form action="{{ url_for('enable_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="enable-btn" onclick="return confirm('Enable {{ user.email }}?')">Enable</button>
+                        </form>
+                        {% else %}
+                        <form action="{{ url_for('disable_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="disable-btn" onclick="return confirm('Disable {{ user.email }}?')">Disable</button>
+                        </form>
+                        {% endif %}
+                        <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="delete-btn" onclick="return confirm('Permanently delete {{ user.email }}?')">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <p>No users registered yet.</p>
+    {% endif %}
+</div>
+
+<style>
+.users-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.users-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.users-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.email-cell {
+    min-width: 200px;
+}
+
+.center-cell {
+    text-align: center;
+    min-width: 80px;
+}
+
+.date-cell {
+    min-width: 120px;
+    white-space: nowrap;
+}
+
+.disable-btn {
+    background-color: #ffc107;
+    color: #212529;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.disable-btn:hover {
+    background-color: #e0a800;
+}
+
+.enable-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.enable-btn:hover {
+    background-color: #218838;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Low Access Area</h2>
+<p>Welcome, {{ user.email }}!</p>
+
+<!-- ADMIN PANEL - Only show if user is admin -->
+{% if user.is_admin %}
+<div class="admin-panel" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #dc3545;">
+    <h3 style="margin-top: 0; color: #dc3545;">Administrator Panel</h3>
+    <p>You have administrator privileges. Access the admin dashboard to configure system settings.</p>
+    <div class="admin-buttons" style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn-submit" style="background: #dc3545; text-decoration: none;">Admin Dashboard</a>
+        <a href="{{ url_for('admin_config') }}" class="btn-submit" style="background: #fd7e14; text-decoration: none;">System Configuration</a>
+        <a href="{{ url_for('admin_logs') }}" class="btn-submit" style="background: #6f42c1; text-decoration: none;">Security Logs</a>
+    </div>
+</div>
+
+{% else %}
+<!-- all the other useers - Only show if NOT admin -->
+<div class="access-options">
+    <h3>Request Higher Access Levels</h3>
+    
+    <form method="POST" action="{{ url_for('request_medium') }}">
+        <input type="hidden" name="screen_width" id="screen_width">
+        <input type="hidden" name="screen_height" id="screen_height">
+
+        <input type="hidden" name="timezone_name" id="timezone_name">
+        <input type="hidden" name="hardware_cores" id="hardware_cores">
+        <input type="hidden" name="device_memory" id="device_memory">
+        
+        <button type="submit" class="btn-submit">Request Medium Access</button>
+    </form>
+</div>
+
+{% if medium_denied %}
+<div class="alert alert-warning">
+    <h4>Medium Access Denied</h4>
+    <p>Your trust score: <strong>{{ score }}</strong> (required: {{ required_score }})</p>
+    <ul>
+        {% for reason in reasons %}
+        <li>{{ reason }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% endif %}
+
+<script>
+    // Set screen dimensions when page loads
+    window.onload = function() {
+        document.getElementById("screen_width").value = window.screen.width;
+        document.getElementById("screen_height").value = window.screen.height;
+
+        // Set timezone name (e.g., "Africa/Johannesburg")
+        document.getElementById("timezone_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+        // Set hardware cores (if available)
+        document.getElementById("hardware_cores").value = navigator.hardwareConcurrency || 'unknown';
+    
+        // Set device memory (if available)
+        document.getElementById("device_memory").value = navigator.deviceMemory || 'unknown';
+    
+    
+    }
+</script>
+
+<style>
+/* Responsive fixes for small screens */
+@media (max-width: 768px) {
+    .admin-buttons {
+        flex-direction: column;
+    }
+    .admin-buttons .btn-submit {
+        margin-right: 0 !important;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

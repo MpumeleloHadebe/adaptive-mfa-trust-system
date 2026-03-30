@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Administrator Dashboard</h2>
+
+<div class="admin-stats">
+    <div class="stat-card">
+        <h3>Total Users</h3>
+        <p class="stat-number">{{ user_count }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Registered Devices</h3>
+        <p class="stat-number">{{ device_count }}</p>
+    </div>
+    <div class="stat-card">
+        <h3> Security Logs</h3>
+        <p class="stat-number">{{ log_count }}</p>
+    </div>
+</div>
+
+<!-- 2FA Status Card -->
+<div class="admin-actions">
+    <div class="admin-card" style="border-left: 4px solid #28a745;">
+        <h3>Two-Factor Authentication</h3>
+        {% if current_user.totp_enabled %}
+            <div class="alert alert-success">
+                <strong> 2FA Enabled</strong>
+                <p>Your account is protected with authenticator app verification.</p>
+                <a href="{{ url_for('user_2fa_setup') }}" class="btn-submit" style="background: #28a745; text-decoration: none;">Manage 2FA</a>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                <strong>2FA Not Enabled</strong>
+                <p>Protect your admin account with two-factor authentication.</p>
+                <a href="{{ url_for('admin_2fa_setup') }}" class="btn-submit" style="background: #dc3545; text-decoration: none;">Enable 2FA</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="admin-card">
+        <h3>System Configuration</h3>
+        <p>Adjust trust factor weights and access thresholds</p>
+        <a href="{{ url_for('admin_config') }}" class="btn-submit" style="background: #dc3545; text-decoration: none;">Configure System</a>
+    </div>
+
+    <div class="admin-card">
+        <h3>Security Monitoring</h3>
+        <p>View authentication events and security incidents</p>
+        <a href="{{ url_for('admin_logs') }}" class="btn-submit" style="background: #fd7e14; text-decoration: none;">View Security Logs</a>
+    </div>
+
+    <div class="admin-card">
+        <h3>User Management</h3>
+        <p>Manage users</p>
+        <a href="{{ url_for('users') }}" class="btn-submit" style="background: #6f42c1; text-decoration: none;">View All Users</a>
+    </div>
+</div>
+
+<div style="margin-top: 2rem;">
+    <a href="{{ url_for('low_access') }}" class="btn-submit" style="background: #6c757d; text-decoration: none;">Back to User Area</a>
+</div>
+
+<style>
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    border-top: 4px solid #007bff;
+}
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    color: #007bff;
+}
+.admin-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+.admin-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.admin-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+.alert {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+}
+.btn-submit {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 0.5rem;
+}
+</style>
+{% endblock %}

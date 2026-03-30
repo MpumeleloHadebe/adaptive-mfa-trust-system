@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mfa.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>One-Time Password Verification</h2>
+        <p>An OTP has been sent to your email. Please enter it below:</p>
+        <form method="POST" action="{{ url_for('verify_otp') }}">
+
+
+                <!-- Hidden input for screen width -->
+            <input type="hidden" name="screen_width" id="screen_width">
+            <input type="hidden" name="screen_height" id="screen_height">
+
+            <input type="hidden" name="timezone_name" id="timezone_name">
+            <input type="hidden" name="hardware_cores" id="hardware_cores">
+            <input type="hidden" name="device_memory" id="device_memory">
+
+            <input type="text" name="otp" id="otp" placeholder="Enter OTP" required>
+            <button type="submit">Verify</button>
+        </form>
+        <div class="info">
+            <p>Trust Score: {{ score }}/14</p>
+            <ul>
+                {% for r in reasons %}
+                    <li>{{ r }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+<script>
+   // Set screen width after page loads
+  window.onload = function() {
+    document.getElementById("screen_height").value = window.screen.height;
+    document.getElementById("screen_width").value = window.screen.width;
+
+    // Set timezone name (e.g., "Africa/Johannesburg")
+    document.getElementById("timezone_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Set hardware cores (if available)
+    document.getElementById("hardware_cores").value = navigator.hardwareConcurrency || 'unknown';
+    
+    // Set device memory (if available)
+    document.getElementById("device_memory").value = navigator.deviceMemory || 'unknown';
+  }
+</script>
+</body>
+</html>

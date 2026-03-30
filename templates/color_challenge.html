@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color Challenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mfa.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Security Question</h2>
+        <p>Please answer the following question to continue:</p>
+        <form method="POST" action="{{ url_for('verify_color') }}">
+            <input type="hidden" name="screen_width" id="screen_width_color">
+            <input type="hidden" name="screen_height" id="screen_height">
+            <input type="text" name="color" id="color" placeholder="Favorite color" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="info">
+            <p>Trust Score: {{ score }}/14</p>
+            <ul>
+                {% for r in reasons %}
+                    <li>{{ r }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script>
+    window.onload = function() {
+        document.getElementById("screen_height").value = window.screen.height;
+        document.getElementById("screen_width_color").value = window.screen.width;
+    }
+</script>
+</body>
+</html>

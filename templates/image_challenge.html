@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MFA Image Challenge</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='mfa.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2 style="color:red;">Select your 2 favorite images</h2>
+    <h3> This is your personalized login challenge.</p>
+
+    <form method="POST" action="{{ url_for('verify_image') }}">
+      <div class="emoji-grid">
+        {% for value, label in options %}
+          <label class="emoji-option">
+            <input type="checkbox" name="images" value="{{ value }}">
+            <span class="emoji">{{ label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      <!-- Hidden input for screen width -->
+      <input type="hidden" name="screen_width" id="screen_width">
+      <input type="hidden" name="screen_height" id="screen_height">
+
+      <input type="hidden" name="timezone_name" id="timezone_name">
+      <input type="hidden" name="hardware_cores" id="hardware_cores">
+      <input type="hidden" name="device_memory" id="device_memory">
+      <button type="submit">Submit</button>
+    </form>    
+
+    <p class="info">Tip: Selecting the wrong images will deny access.</p>
+  </div>
+
+  <style>
+  /* Additions on top of mfa.css */
+  .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 10px;
+      margin-top: 20px;
+  }
+
+  .emoji-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+  }
+
+  .emoji-option input {
+      margin-bottom: 8px;
+      transform: scale(1.3);
+      cursor: pointer;
+  }
+
+  .emoji {
+      font-size: 2.5rem;
+  }
+  </style>
+
+<script>
+   // Set screen width after page loads
+  window.onload = function() {
+    document.getElementById("screen_height").value = window.screen.height;
+    document.getElementById("screen_width").value = window.screen.width;
+
+    // Set timezone name (e.g., "Africa/Johannesburg")
+    document.getElementById("timezone_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Set hardware cores (if available)
+    document.getElementById("hardware_cores").value = navigator.hardwareConcurrency || 'unknown';
+    
+    // Set device memory (if available)
+    document.getElementById("device_memory").value = navigator.deviceMemory || 'unknown';
+  }
+</script>
+
+</body>
+</html>

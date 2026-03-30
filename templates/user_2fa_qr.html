@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan QR Code - SecureAccess</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Setup you Authenticator App</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>Step 1:</strong> Scan this QR code with your authenticator app (Google Authenticator etc.)
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid" style="max-width: 200px;">
+                        </div>
+                        
+                        <div class="alert alert-secondary">
+                            <strong>Can't scan?</strong> Enter this secret key manually:<br>
+                            <code class="d-block mt-2 p-2 bg-light">{{ secret }}</code>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <strong>Step 2:</strong> Enter the 6-digit code from your authenticator app to verify setup.
+                        </div>
+                        
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="mb-3">
+                                {{ form.totp_code.label(class="form-label") }}
+                                {{ form.totp_code(class="form-control", placeholder="000000") }}
+                                {% if form.totp_code.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.totp_code.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                {{ form.submit(class="btn btn-success") }}
+                                <a href="{{ url_for('user_2fa_setup') }}" class="btn btn-secondary">Back to Setup</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

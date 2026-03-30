@@ -1,0 +1,99 @@
+/* Shared styles for Low, Medium, and High Access pages */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef1f5;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+p {
+    color: #555;
+}
+
+button {
+    display: inline-block;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+/* Stage-specific button colors */
+.btn-low {
+    background: #6c757d;
+    color: white;
+}
+.btn-low:hover {
+    background: #545b62;
+}
+
+.btn-medium {
+    background: #007BFF;
+    color: white;
+}
+.btn-medium:hover {
+    background: #0056b3;
+}
+
+.btn-high {
+    background: #dc3545;
+    color: white;
+}
+.btn-high:hover {
+    background: #a71d2a;
+}
+
+.score-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+/* Medium access denial box */
+.denial-box {
+    border: 2px solid #e74c3c; /* Red border to indicate denial */
+    background-color: #fdecea;  /* Light red/pink background */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.denial-box h3 {
+    color: #c0392b;  /* Darker red for heading */
+    margin-bottom: 10px;
+}
+
+.denial-box p {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.denial-box ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.denial-box ul li {
+    margin-bottom: 5px;
+    color: #333;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medium Access Denied</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='access.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2 style="color:red;">Access to Medium Level Denied</h2>
+        <p>Trust Score: <strong>{{ score }}/{{ required }}</strong></p>
+
+        <h3>Details:</h3>
+        <ul>
+            {% for r in reasons %}
+                <li>{{ r }}</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{{ url_for('low_access') }}">
+            <button class="btn-low">Back to Low Access</button>
+        </a>
+    </div>
+</body>
+</html>

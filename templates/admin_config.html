@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Configuration</h2>
+<p>Adjust trust factor weights and thresholds:</p>
+
+<form method="POST" class="form-box">
+    <h3>Factor Weights</h3>
+    
+    <div class="form-group">
+        <label>Known Device Weight</label>
+        <input type="number" name="known_device" value="{{ configs.known_device }}" class="input-field" min="0" max="10">
+    </div>
+
+    <div class="form-group">
+        <label>Trusted Subnet Weight</label>
+        <input type="number" name="trusted_subnet" value="{{ configs.trusted_subnet }}" class="input-field" min="0" max="10">
+    </div>
+
+    <div class="form-group">
+        <label>Safe Login Time Weight</label>
+        <input type="number" name="safe_login_time" value="{{ configs.safe_login_time }}" class="input-field" min="0" max="10">
+    </div>
+
+    <div class="form-group">
+        <label>Persistent Token Weight</label>
+        <input type="number" name="persistent_token" value="{{ configs.persistent_token }}" class="input-field" min="0" max="10">
+    </div>
+
+    <h3>Access Thresholds</h3>
+    
+    <div class="form-group">
+        <label>Medium Access Threshold</label>
+        <input type="number" name="medium_access_threshold" value="{{ configs.medium_access_threshold }}" class="input-field" min="0" max="20">
+    </div>
+
+    <div class="form-group">
+        <label>High Access Threshold</label>
+        <input type="number" name="high_access_threshold" value="{{ configs.high_access_threshold }}" class="input-field" min="0" max="20">
+    </div>
+
+    <button type="submit" class="btn-submit">Update Configuration</button>
+</form>
+
+<div style="margin-top: 2rem;">
+    <a href="{{ url_for('admin_logs') }}" class="btn-submit" style="background: #fd7e14; text-decoration: none;">View Security Logs</a>
+    <a href="{{ url_for('low_access') }}" class="btn-submit" style="background: #6c757d; text-decoration: none;">Back to User Area</a>
+</div>
+{% endblock %}
